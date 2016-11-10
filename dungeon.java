@@ -14,26 +14,20 @@ while (true)
 	if (l == 0 && r == 0 && c == 0)
 		break;
 	
-	scan.nextLine();
-	
 	char[][][] map = new char[l][r][c];
 	int[][][] d = new int[l][r][c];
 	
 	for (int i = 0; i < l; i++)
-		{
 		for (int j = 0; j < r; j++)
 			{
-			map[i][j] = scan.nextLine().toCharArray();
+			map[i][j] = scan.next().toCharArray();
 			Arrays.fill(d[i][j], -1);
 			}
-		scan.nextLine();
-		}
 	
 	Point start = new Point(-1 , -1 , -1);
 	Point end = new Point(-1 , -1 , -1);
 	
 	for (int i = 0; i < l; i++)
-		{
 		for (int j = 0; j < r; j++)
 			for (int k = 0; k < c; k++)
 				if (map[i][j][k] == 'S')
@@ -46,7 +40,6 @@ while (true)
 					end = new Point(i , j , k);
 					map[i][j][k] = '.';
 					}
-		}
 	
 	ArrayList<Point> queue = new ArrayList<>();
 	queue.add(start);
