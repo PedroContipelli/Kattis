@@ -8,7 +8,7 @@ static int[] nums;
 static ArrayList<Integer> close = new ArrayList<>();
 
 public static void gen(int index , int sum , boolean use , int nearest) {
-    
+
 close.add(nearest);
 
 if (index == nums.length)
@@ -44,9 +44,6 @@ gen(0 , 0 , false , 10000000);
 Collections.sort(close);
 
 int near = 0;
-
-while (close.get(0) == 0)
-    close.remove(0);
 
 for (int x : close)
     if (close1000(x , near , true))
