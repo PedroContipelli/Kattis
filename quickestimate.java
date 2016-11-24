@@ -3,9 +3,9 @@ public class quickestimate {
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
     
-int x = scan.nextInt();
+int cases = scan.nextInt();
 
-for (int i = 0; i < x; i++)
+while (cases --> 0)
     {
     String str = scan.next();
     System.out.println(str.length());

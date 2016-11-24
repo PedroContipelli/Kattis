@@ -21,15 +21,6 @@ public static char AND(char a , char b) {
 	return '1';
 }
 
-public static String reverse(String str) {
-	String build = "";
-	
-	for (int i = str.length() - 1; i >= 0; i--)
-		build += str.charAt(i);
-	
-	return build;
-}
-
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
@@ -42,17 +33,17 @@ while (true)
 	
 	char[] bits = "????????????????????????????????".toCharArray();
 	
-	for (int zax = 0; zax < instructions; zax++)
+	while (instructions --> 0)
 		{
-		String oper = scan.next();
+		String op = scan.next();
 		
-		if (oper.equals("CLEAR"))
+		if (op.equals("CLEAR"))
 			bits[scan.nextInt()] = '0';
 		
-		else if (oper.equals("SET"))
+		else if (op.equals("SET"))
 			bits[scan.nextInt()] = '1';
 		
-		else if (oper.equals("OR"))
+		else if (op.equals("OR"))
 			{
 			int i = scan.nextInt();
 			int j = scan.nextInt();
@@ -60,7 +51,7 @@ while (true)
 			bits[i] = OR(bits[i] , bits[j]);
 			}
 		
-		else if (oper.equals("AND"))
+		else if (op.equals("AND"))
 			{
 			int i = scan.nextInt();
 			int j = scan.nextInt();
@@ -69,7 +60,7 @@ while (true)
 			}
 		}
 	
-	System.out.println(reverse(new String(bits)));
+	System.out.println(new StringBuilder(new String(bits)).reverse());
 	}
 
 	scan.close();

@@ -5,13 +5,15 @@ Scanner scan = new Scanner(System.in);
 
 int cases = scan.nextInt();
 
-for (int i = 0; i < cases; i++)
+while (cases --> 0)
 	{
 	double v0 = scan.nextDouble();
-	double theta = scan.nextDouble() * Math.PI / 180.0;
+	double theta = scan.nextDouble();
 	double x1 = scan.nextDouble();
 	double h1 = scan.nextDouble();
 	double h2 = scan.nextDouble();
+	
+	theta = Math.toRadians(theta);
 	
 	double t = x1 / (v0 * Math.cos(theta));
 	double y = v0 * t * Math.sin(theta) - (0.5 * 9.81 * t * t);

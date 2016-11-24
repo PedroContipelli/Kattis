@@ -1,55 +1,47 @@
 import java.util.Scanner;
-import java.util.HashSet;
+import java.util.StringTokenizer;
 import java.util.ArrayList;
+import java.util.Collections;
 public class golombrulers {
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
 outer: while (scan.hasNextLine())
 	{
-	String[] Snums = scan.nextLine().split(" ");
-	int[] nums = new int[Snums.length];
-	HashSet<Integer> diffs = new HashSet<>((nums.length * (nums.length - 1)) / 2);
-	ArrayList<Integer> not = new ArrayList<>();
+	StringTokenizer token = new StringTokenizer(scan.nextLine() , " ");
+	ArrayList<Integer> nums = new ArrayList<>();
+	
+	while (token.hasMoreTokens())
+		nums.add(Integer.parseInt(token.nextToken()));
+	
+	ArrayList<Integer> diffs = new ArrayList<>();
+	Collections.sort(nums);
 	int max = 0;
 	
-	for (int i = 0; i < Snums.length; i++)
-		nums[i] = Integer.parseInt(Snums[i]);
-	
-	for (int i = 0; i < nums.length; i++)
-		for (int j = 0; j < nums.length; j++)
-			if (j != i)
+	for (int i = 0; i < nums.size(); i++)
+		for (int j = i + 1; j < nums.size(); j++)
+			{
+			int diff = nums.get(j) - nums.get(i);
+			
+			if (diff > max)
+				max = diff;
+
+			if (diffs.contains(diff))
 				{
-				int diff = nums[i] - nums[j];
-				
-				if (diff > max)
-					max = diff;
-				
-				if (diffs.contains(diff))
-					{
-					System.out.println("not a ruler");
-					continue outer;
-					}
-				else
-					diffs.add(diff);
+				System.out.println("not a ruler");
+				continue outer;
 				}
+			else
+				diffs.add(diff);
+			}
+		
+	String missing = "";
 	
 	for (int i = 1; i <= max; i++)
-		if (! diffs.contains(i))
-			not.add(i);
+		if (!diffs.contains(i))
+			missing += i + " ";
 	
-	if (not.isEmpty())
-		System.out.println("perfect");
-	else
-		{
-		System.out.print("missing ");
-		String num = "";
-		
-		for (int i = 0; i < not.size(); i++)
-			num += not.get(i) + " ";
-		
-		System.out.println(num.substring(0, num.length() - 1));
-		}
+	System.out.println(missing.isEmpty() ? "perfect" : "missing " + missing);
 	}
 
 scan.close();
