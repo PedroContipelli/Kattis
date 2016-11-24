@@ -4,9 +4,9 @@ public class aliennumbers {
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
-int testcases = scan.nextInt();
+int cases = scan.nextInt();
 
-for (int zax = 1; zax <= testcases; zax++)
+for (int z = 1; z <= cases; z++)
 	{
 	HashMap<String , Integer> map1 = new HashMap<String , Integer>();
 	HashMap<Integer , String> map2 = new HashMap<Integer , String>();
@@ -14,46 +14,31 @@ for (int zax = 1; zax <= testcases; zax++)
 	String lang1 = scan.next();
 	String lang2 = scan.next();
 	
+	int base1 = lang1.length();
+	int base2 = lang2.length();
+	
 	for (int i = 0; i < lang1.length(); i++)
 		map1.put(lang1.substring(i, i + 1), i);
 	
 	for (int i = 0; i < lang2.length(); i++)
 		map2.put(i, lang2.substring(i, i + 1));
 	
-	long x = 0;
-	int exp = 0;
+	long base10Num = 0;
 	
-	while (num.length() > 0)
-		{
-		x += Math.pow(lang1.length(), exp) * map1.get(num.substring(num.length() - 1));
-		num = num.substring(0, num.length() - 1);
-		exp++;
-		}
+	for (int x = num.length() - 1; x >= 0; x--)
+		base10Num += map1.get(num.substring(x, x + 1)) * (long)Math.pow(base1, num.length() - x - 1);
 	
-	int i = 0;
-	
-	while ((long)Math.pow(lang2.length(), i) <= x)
-		i++;
-	
-	i--;
-	
+	int exp = (int)(Math.log(base10Num) / Math.log(base2));
 	String str = "";
 	
-	while (x > 0)
+	while (exp --> -1)
 		{
-		int digit = (int)(x / (long)Math.pow(lang2.length(), i));
+		int digit = (int)(base10Num / Math.pow(base2, exp + 1));
 		str += map2.get(digit);
-		x -= (long)Math.pow(lang2.length(), i) * digit;
-		i--;
+		base10Num -= Math.pow(base2, exp + 1) * digit;
 		}
 	
-	while (i > -1)
-		{
-		str += map2.get(0);
-		i--;
-		}
-	
-	System.out.println("Case #" + zax + ": " + str);
+	System.out.println("Case #" + z + ": " + str);
 	}
 
 scan.close();
