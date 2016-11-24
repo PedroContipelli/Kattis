@@ -3,60 +3,49 @@ import java.util.ArrayList;
 import java.util.Collections;
 public class guessthedatastructure {
 	
-public static boolean stack(int[] cmds) {
-	ArrayList<Integer> nums = new ArrayList<>();
+public static boolean stack(int[] cmds , int[] vals) {
+	ArrayList<Integer> stack = new ArrayList<>();
 	
 	for (int i = 0; i < cmds.length; i++)
 		{
-		int type = cmds[i];
-		i++;
+		if (cmds[i] == 1)
+			stack.add(vals[i]);
 		
-		if (type == 1)
-			nums.add(cmds[i]);
-		else
-			{
-			if (nums.isEmpty() || nums.remove(nums.size() - 1) != cmds[i])
-				return false;
-			}
+		else if (stack.isEmpty() || stack.remove(stack.size() - 1) != vals[i])
+			return false;
 		}
 	
 	return true;
 }
 
-public static boolean queue(int[] cmds) {
-	ArrayList<Integer> nums = new ArrayList<>();
+public static boolean queue(int[] cmds , int[] vals) {
+	ArrayList<Integer> queue = new ArrayList<>();
 	
 	for (int i = 0; i < cmds.length; i++)
 		{
-		int type = cmds[i];
-		i++;
+		if (cmds[i] == 1)
+			queue.add(vals[i]);
 		
-		if (type == 1)
-			nums.add(cmds[i]);
-		else
-			{
-			if (nums.isEmpty() || nums.remove(0) != cmds[i])
-				return false;
-			}
+		else if (queue.isEmpty() || queue.remove(0) != vals[i])
+			return false;
 		}
 	
 	return true;
 }
 
-public static boolean priorityQueue(int[] cmds) {
-	ArrayList<Integer> nums = new ArrayList<>();
+public static boolean Pqueue(int[] cmds , int[] vals) {
+	ArrayList<Integer> queue = new ArrayList<>();
 	
 	for (int i = 0; i < cmds.length; i++)
 		{
-		int type = cmds[i];
-		i++;
+		if (cmds[i] == 1)
+			queue.add(vals[i]);
 		
-		if (type == 1)
-			nums.add(cmds[i]);
 		else
 			{
-			Collections.sort(nums);
-			if (nums.isEmpty() || nums.remove(nums.size() - 1) != cmds[i])
+			Collections.sort(queue);
+			
+			if (queue.isEmpty() || queue.remove(queue.size() - 1) != vals[i])
 				return false;
 			}
 		}
@@ -67,36 +56,42 @@ public static boolean priorityQueue(int[] cmds) {
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
-while (scan.hasNext())
+while (scan.hasNextInt())
 	{
-	int nums = scan.nextInt();
-	int[] cmds = new int[2*nums];
+	int n = scan.nextInt();
+
+	int[] cmds = new int[n];
+	int[] vals = new int[n];
 	
-	for (int i = 0; i < cmds.length; i++)
+	for (int i = 0; i < n; i++)
+		{
 		cmds[i] = scan.nextInt();
+		vals[i] = scan.nextInt();
+		}
 	
-	int types = 0;
+	int count = 0;
+	
 	String type = "impossible";
 	
-	if (stack(cmds))
+	if (stack(cmds , vals))
 		{
-		types++;
 		type = "stack";
+		count++;
 		}
-	
-	if (queue(cmds))
+
+	if (queue(cmds , vals))
 		{
-		types++;
 		type = "queue";
+		count++;
 		}
-	
-	if (priorityQueue(cmds))
+
+	if (Pqueue(cmds , vals))
 		{
-		types++;
 		type = "priority queue";
+		count++;
 		}
 	
-		System.out.println(types > 1 ? "not sure" : type);
+	System.out.println(count > 1 ? "not sure" : type);
 	}
 	
 scan.close();
