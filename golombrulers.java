@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.Collections;
 public class golombrulers {
@@ -8,11 +7,11 @@ Scanner scan = new Scanner(System.in);
 
 outer: while (scan.hasNextLine())
 	{
-	StringTokenizer token = new StringTokenizer(scan.nextLine() , " ");
+	Scanner token = new Scanner(scan.nextLine());
 	ArrayList<Integer> nums = new ArrayList<>();
 	
-	while (token.hasMoreTokens())
-		nums.add(Integer.parseInt(token.nextToken()));
+	while (token.hasNextInt())
+		nums.add(token.nextInt());
 	
 	ArrayList<Integer> diffs = new ArrayList<>();
 	Collections.sort(nums);
@@ -42,6 +41,7 @@ outer: while (scan.hasNextLine())
 			missing += i + " ";
 	
 	System.out.println(missing.isEmpty() ? "perfect" : "missing " + missing);
+	token.close();
 	}
 
 scan.close();
