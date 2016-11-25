@@ -12,3 +12,5 @@ while (scan.hasNextInt())
 scan.close();
 	}
 }
+
+// Two liner ;)
