@@ -7,7 +7,6 @@ int LowerBound = 1;
 int UpperBound = 1000;
 int X = (LowerBound + UpperBound) / 2;
 System.out.println(X);
-System.out.flush();
 
 while (true)
 	{
