@@ -1,13 +1,12 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 public class wheresmyinternet {
 	
 static HashSet<Integer> net = new HashSet<>();
-static HashMap<Integer , ArrayList<Integer>> map1 = new HashMap<>();
-static HashMap<Integer , ArrayList<Integer>> map2 = new HashMap<>();
+static HashMap<Integer , HashSet<Integer>> map1 = new HashMap<>();
+static HashMap<Integer , HashSet<Integer>> map2 = new HashMap<>();
 
-public static void add(int a) {
+public static void net(int a) {
 	
 	if (net.contains(a))
 		return;
@@ -16,11 +15,11 @@ public static void add(int a) {
 	
 	if (map1.containsKey(a))
 		for (int x : map1.get(a))
-			add(x);
+			net(x);
 	
 	if (map2.containsKey(a))
 		for (int y : map2.get(a))
-			add(y);
+			net(y);
 }
 
 public static void main(String[] args) {
@@ -38,7 +37,7 @@ for (int i = 0; i < edges; i++)
 		map1.get(x).add(y);
 	else
 		{
-		map1.put(x , new ArrayList<>());
+		map1.put(x , new HashSet<>());
 		map1.get(x).add(y);
 		}
 	
@@ -46,23 +45,23 @@ for (int i = 0; i < edges; i++)
 		map2.get(y).add(x);
 	else
 		{
-		map2.put(y , new ArrayList<>());
+		map2.put(y , new HashSet<>());
 		map2.get(y).add(x);
 		}
 	}
 
-add(1);
+net(1);
 
-boolean one = false;
+boolean printed = false;
 
 for (int i = 1; i <= nodes; i++)
 	if (!net.contains(i))
 		{
 		scan.println(i);
-		one = true;
+		printed = true;
 		}
 
-if (!one)
+if (!printed)
 	System.out.println("Connected");
 
 scan.close();
