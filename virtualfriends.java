@@ -1,91 +1,65 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-
 public class virtualfriends {
+
 public static void main(String[] args) {
-Kattio scan = new Kattio(System.in , System.out);
+Kattio scan = new Kattio(System.in);
 
 int cases = scan.getInt();
 
-for (int zax = 0; zax < cases; zax++)
-	{
-	ArrayList<HashSet<String>> uni = new ArrayList<>();
-	
-	int friendships = scan.getInt();
-	
-	for (int zex = 0; zex < friendships; zex++)
-		{
-		String friend1 = scan.getWord();
-		String friend2 = scan.getWord();
-		
-		if (uni.isEmpty())
-			{
-			HashSet<String> network = new HashSet<>();
-			network.add(friend1);
-			network.add(friend2);
-			uni.add(network);
-			scan.println(2);
-			}
-		else
-			{
-			for (int i = 0; i < uni.size(); i++)
-				{
-				if (uni.get(i).contains(friend1))
-					{
-					boolean found = false;
-					
-					for (int x = i + 1; x < uni.size(); x++)
-						if (uni.get(x).contains(friend2) && x != i)
-							{
-							uni.get(i).addAll(uni.get(x));
-							uni.remove(x);
-							found = true;
-							break;
-							}
-					
-					if (!found)
-						uni.get(i).add(friend2);
-					
-					scan.println(uni.get(i).size());
-					
-					break;
-					}
-			
-				if (uni.get(i).contains(friend2))
-					{
-					boolean found = false;
-					
-					for (int x = i + 1; x < uni.size(); x++)
-						if (uni.get(x).contains(friend1) && x != i)
-							{
-							uni.get(i).addAll(uni.get(x));
-							uni.remove(x);
-							found = true;
-							break;
-							}
-					
-					if (!found)
-						uni.get(i).add(friend1);
-					
-					scan.println(uni.get(i).size());
-					
-					break;
-					}
-				
-				if (i == uni.size() - 1)
-					{
-					HashSet<String> network = new HashSet<>();
-					network.add(friend1);
-					network.add(friend2);
-					uni.add(network);
-					scan.println(2);
-					break;
-					}
-				}
-			}
-		}
-	}
+while (cases --> 0)
+    {
+    HashMap<String , HashSet<String>> web = new HashMap<>();
+    HashMap<String , String> find = new HashMap<>();
+    int friendships = scan.getInt();
+    
+    while (friendships --> 0)
+        {
+        String friend1 = scan.getWord();
+        String friend2 = scan.getWord();
+        
+        if (!find.containsKey(friend1) && !find.containsKey(friend2))
+            {
+            web.put(friend1 , new HashSet<>());
+            web.get(friend1).add(friend1);
+            web.get(friend1).add(friend2);
+            
+            find.put(friend2 , friend1);
+            find.put(friend1 , friend1);
+            }
+        else if (!find.containsKey(friend1))
+            {
+            find.put(friend1 , find.get(friend2));
+            web.get(find.get(friend1)).add(friend1);
+            }
+        else if (!find.containsKey(friend2))
+            {
+            find.put(friend2 , find.get(friend1));
+            web.get(find.get(friend2)).add(friend2);
+            }
+        else if (!find.get(friend1).equals(find.get(friend2)))
+            {   
+        	if (web.get(find.get(friend1)).size() < web.get(find.get(friend2)).size())
+        		{
+        		String temp = friend2;
+        		friend2 = friend1;
+        		friend1 = temp;
+        		}
+        	
+            web.get(find.get(friend1)).addAll(web.get(find.get(friend2)));
+            
+            for (String friend : web.get(find.get(friend2)))
+                if (!friend.equals(friend2))
+                    find.put(friend , find.get(friend1));
+            
+            web.remove(find.get(friend2));
+            find.put(friend2 , find.get(friend1));
+            }
+        
+        System.out.println(web.get(find.get(friend1)).size());
+        }
+    }
 
 scan.close();
-	}
+    }
 }
