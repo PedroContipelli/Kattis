@@ -1,5 +1,5 @@
 import java.util.*;
-public class a10kindsofpeople {
+public class A10kindsofpeople {
 
 static char[][] board;
 static int[][] parts;
