@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class a2048 {
+public class A2048 {
 	
 static int[] nums = new int[4];
 
