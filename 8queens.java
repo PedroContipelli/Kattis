@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class A8queens {
+public class 8queens {
 	
 public static boolean checker(int r , int c , char[][] board) {
 	for (int i = -7; i < 8; i++)
