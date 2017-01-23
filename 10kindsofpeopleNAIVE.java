@@ -1,5 +1,5 @@
 import java.util.*;
-public class A10kindsofpeopleNAIVE {
+public class 10kindsofpeopleNAIVE {
 
 // This solution will give you TLE
 	
