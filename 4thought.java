@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.HashMap;
-public class A4thought {
+public class 4thought {
 
 public static String op(int in) {
 	if (in == 0)
