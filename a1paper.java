@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class A1paper {
+public class a1paper {
 	
 public static boolean possible(int[] nums , int pow2) {
 	int sum = 0;
