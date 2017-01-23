@@ -1,97 +1,86 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 public class A10kindsofpeople {
 
-static char[][] board;
-static int[][] parts;
+static int[] R = {1 , -1 , 0 , 0};
+static int[] C = {0 , 0 , 1 , -1};
 
-public static void fill(Point start , char bin , int x) {
-    
-    ArrayDeque<Point> queue = new ArrayDeque<Point>(1000 * 1000);
-    queue.add(start);
-    parts[start.r][start.c] = x;
-    
-    while(!queue.isEmpty())
-        {
-        Point P = queue.pollLast();
-        int r = P.r;
-        int c = P.c;
-        
-        // NORTH
-        if (r - 1 >= 0 && board[r - 1][c] == bin && parts[r - 1][c] == 0)
-            {
-            queue.add(new Point(r - 1 , c));
-            parts[r - 1][c] = x;
-            }
-                
-        // SOUTH
-        if (r + 1 < board.length && board[r + 1][c] == bin && parts[r + 1][c] == 0)
-            {
-            queue.add(new Point(r + 1 , c));
-            parts[r + 1][c] = x;
-            }
-        
-        // EAST
-        if (c + 1 < board[0].length && board[r][c + 1] == bin && parts[r][c + 1] == 0)
-            {
-            queue.add(new Point(r , c + 1));
-            parts[r][c + 1] = x;
-            }
-                
-        // WEST
-        if (c - 1 >= 0 && board[r][c - 1] == bin && parts[r][c - 1] == 0)
-            {
-            queue.add(new Point(r , c - 1));
-            parts[r][c - 1] = x;
-            }
-        }
+public static void bfs(Point2 start , char[][] map , int[][] groups , int fill) {
+
+ArrayList<Point2> queue = new ArrayList<>();
+queue.add(start);
+groups[start.r][start.c] = fill;
+
+while (!queue.isEmpty())
+	{
+	Point2 curr = queue.remove(0);
+	int r = curr.r;
+	int c = curr.c;
+	
+	for (int i = 0; i < 4; i++)
+		{
+		int tryR = r + R[i];
+		int tryC = c + C[i];
+
+		if (tryR >= 0 && tryR < map.length && tryC >= 0 && tryC < map[0].length)
+			if (map[tryR][tryC] == map[r][c] && groups[tryR][tryC] != fill)
+				{
+				groups[tryR][tryC] = fill;
+				queue.add(new Point2(tryR , tryC));
+				}
+		}
+	}
+
 }
 
 public static void main(String[] args) {
-Kattio scan = new Kattio(System.in);
+Scanner scan = new Scanner(System.in);
 
-int rows = scan.getInt();
-int columns = scan.getInt();
+int rows = scan.nextInt();
+int columns = scan.nextInt();
 
-board = new char[rows][columns];
-parts = new int [rows][columns];
+char[][] map = new char[rows][columns];
 
 for (int i = 0; i < rows; i++)
-    board[i] = scan.getWord().toCharArray();
+	map[i] = scan.next().toCharArray();
 
-int x = 10;
+int[][] groups = new int[map.length][map[0].length];
+int fill = 2;
 
-for (int r = 0; r < parts.length; r++)
-    for (int c = 0; c < parts[0].length; c++)
-        {
-        if (parts[r][c] == 0)
-            fill(new Point(r , c) , board[r][c] , x);
-        
-        x++;
-        }
+for (int i = 0; i < rows; i++)
+	for (int j = 0; j < columns; j++)
+		if (groups[i][j] == 0)
+			{
+			bfs(new Point2(i , j) , map , groups , fill);
+			fill++;
+			}
 
-int queries = scan.getInt();
+int queries = scan.nextInt();
 
 for (int i = 0; i < queries; i++)
-    {
-    Point start = new Point(scan.getInt() - 1 , scan.getInt() - 1);
-    Point end   = new Point(scan.getInt() - 1 , scan.getInt() - 1);
-    
-    if (parts[start.r][start.c] == parts[end.r][end.c])
-        System.out.println(board[start.r][start.c] == '0' ? "binary" : "decimal");
-    else
-        System.out.println("neither");
-    }
+	{
+	int r1 = scan.nextInt() - 1;
+	int c1 = scan.nextInt() - 1;
+	int r2 = scan.nextInt() - 1;
+	int c2 = scan.nextInt() - 1;
+	
+	if (groups[r1][c1] == groups[r2][c2])
+		System.out.println(map[r1][c1] == '1' ? "decimal" : "binary");
+	else
+		System.out.println("neither");
+	}
+
 scan.close();
-    }
+	}
 }
 
-class Point {
-    
+class Point2 {
+	
 int r , c;
 
-public Point(int a , int b) {
-    this.r = a;
-    this.c = b;
+public Point2 (int a , int b) {
+	r = a;
+	c = b;
 }
 
 }
