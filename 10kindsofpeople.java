@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-public class A10kindsofpeople {
+public class 10kindsofpeople {
 
 static int[] R = {1 , -1 , 0 , 0};
 static int[] C = {0 , 0 , 1 , -1};
