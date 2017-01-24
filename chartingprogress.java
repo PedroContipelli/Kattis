@@ -21,14 +21,14 @@ while (scan.hasNext())
     
     for (String row : graph)
         {
-    	char[] log = row.replace("*" , "..").toCharArray();
+    	char[] log = row.replace("*" , ".").toCharArray();
     	
-    	int stars = log.length - row.length();
+    	int stars = row.length() - row.replace("*" , "").length();
         
     	for (int i = 0; i < stars; i++)
     		log[row.length() - 1 - total++] = '*';
         
-        System.out.println(new String(log).substring(0 , row.length()));
+        System.out.println(new String(log));
         }
     
     System.out.println();
