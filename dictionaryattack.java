@@ -1,113 +1,85 @@
 import java.util.regex.*;
 import java.util.*;
 public class dictionaryattack {
-    
-static HashSet<String> dictionary = new HashSet<>();
-static HashSet<String> dictionary1 = new HashSet<>();
-static HashSet<String> dictionary2 = new HashSet<>();
-static HashSet<String> dictionary3 = new HashSet<>();
 
-public static void addTransposes(HashSet<String> set , String str) {
-
-    char[] word = str.toCharArray();
-    
-    for (int i = 0; i < word.length - 1; i++)
-        {
-        char temp = word[i];
-        word[i] = word[i + 1];
-        word[i + 1] = temp;
-        
-        set.add(new String(word));
-        
-        temp = word[i];
-        word[i] = word[i + 1];
-        word[i + 1] = temp;
-        }
+public static void addTransposes(HashMap<String , Integer> dictionary) {
+	
+for (int changes = 1; changes <= 3; changes++)
+	{
+	HashMap<String , Integer> queue = new HashMap<>();
+	
+	for (String word: dictionary.keySet())
+		{
+		char[] t = word.toCharArray();
+		
+		// Transposes of "Hello" : "eHllo" , "Hlelo" , "Hello" (Repeated) , "Helol"
+		
+		for (int i = 0; i < t.length - 1; i++)
+			{
+			char temp = t[i];
+			t[i] = t[i + 1];
+			t[i + 1] = temp;
+			
+			String transpose = new String(t);
+			
+			if (!dictionary.containsKey(transpose))
+				queue.put(transpose , changes);
+			
+			temp = t[i];
+			t[i] = t[i + 1];
+			t[i + 1] = temp;
+			}
+		}
+	
+	dictionary.putAll(queue);
+	}
 }
 
-public static int countNumbers(String str) {
-    
-    int count = 0;
-    
-    for (int i = 0; i < str.length(); i++)
-        if (str.charAt(i) >= '0' && str.charAt(i) <= '9')
-            count++;
-    
-    return count;
-}
-
-public static String buildRegex(String str) {
-    return str.replaceAll("[0-9]" , "[a-zA-Z]");
+public static int countDigits(String str) {
+	
+	int count = 0;
+	
+	for (int i = 0; i < str.length(); i++)
+		{
+		char x = str.charAt(i);
+		
+		if (x >= '0' && x <= '9')
+			count++;
+		}
+	
+	return count;
 }
 
 public static void main(String[] args) {
 Kattio scan = new Kattio(System.in);
 
-int words = scan.getInt();
+int N = scan.getInt();
+HashMap<String , Integer> dictionary = new HashMap<>();
 
-for (int i = 0; i < words; i++)
-    dictionary.add(scan.getWord());
+for (int i = 0; i < N; i++)
+	dictionary.put(scan.getWord() , 0);
 
-for (String word : dictionary)
-    addTransposes(dictionary1 , word);
+addTransposes(dictionary);
 
-for (String word : dictionary1)
-    addTransposes(dictionary2 , word);
-
-for (String word : dictionary2)
-    addTransposes(dictionary3 , word);
-
+CandidateLoop:
 while (scan.hasMoreTokens())
-    {
-    String password = scan.getWord();
-    int transposes = 5;
-    
-    int count = countNumbers(password);
-    
-    if (count > 3)
-        System.out.println(password);
-    else
-        {
-        Pattern pattern = Pattern.compile(buildRegex(password));
-        
-        for (String word : dictionary)
-            {
-            Matcher match = pattern.matcher(word);
-            
-            if (match.find())
-                transposes = 0;
-            }
-        
-        for (String word : dictionary1)
-            {
-            Matcher match = pattern.matcher(word);
-            
-            if (match.find() && transposes == 5)
-                transposes = 1;
-            }
-        
-        for (String word : dictionary2)
-            {
-            Matcher match = pattern.matcher(word);
-            
-            if (match.find() && transposes == 5)
-                transposes = 2;
-            }
-        
-        for (String word : dictionary3)
-            {
-            Matcher match = pattern.matcher(word);
-            
-            if (match.find() && transposes == 5)
-                transposes = 3;
-            }
-        
-        count += transposes;
-        
-        if (count > 3)
-            System.out.println(password);
-        }
-    }
+	{
+	String candidate = scan.getWord();
+	String candidateRegex = candidate.replaceAll("[0-9]" , "[a-zA-Z]");
+	
+	int changes = countDigits(candidate);
+	
+	for (String word : dictionary.keySet())
+		{
+		if (Pattern.matches(candidateRegex , word))
+			{
+			if (changes + dictionary.get(word) <= 3)
+				continue CandidateLoop;
+			}
+		}
+	
+	System.out.println(candidate);
+	}
 
 scan.close();
     }
