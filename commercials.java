@@ -1,31 +1,37 @@
-import java.util.Scanner;
+import java.util.*;
 public class commercials {
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
-int len = scan.nextInt();
-int price = scan.nextInt();
+int N = scan.nextInt();
+int cost = scan.nextInt();
 
-int[] nums = new int[len];
+int[] nums = new int[N];
 
-for (int i = 0; i < len; i++)
-	nums[i] = scan.nextInt() - price;
+for (int i = 0; i < nums.length; i++)
+	nums[i] = scan.nextInt();
 
-int max_so_far = 0;
-int max_up_now = 0;
+// 18 , 35 , 6 , 80 , 15 , 21
 
-for (int i = 0; i < len; i++)
+for (int i = 0; i < nums.length; i++)
+	nums[i] -= cost;
+
+// -2 , 15 , -14 , 60 , -5 , 1
+
+int current = 0;
+int max = 0;
+
+for (int x : nums)
 	{
-	max_up_now += nums[i];
+	if (current + x > 0)
+		current += x;
+	else
+		current = 0;
 	
-	if (max_up_now < 0)
-		max_up_now = 0;
-	
-	if (max_up_now > max_so_far)
-		max_so_far = max_up_now;
+	max = Math.max(current , max);
 	}
 
-System.out.println(max_so_far);
+System.out.println(max);
 scan.close();
 	}
 }
