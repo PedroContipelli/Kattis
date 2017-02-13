@@ -3,100 +3,94 @@ public class islandhopping {
 
 static int[] parent;
 
-public static int find(int child) {
-    return parent[child] == child ? child : (parent[child] = find(parent[child]));
+public static double dist(double x1 , double y1 , double x2 , double y2) {
+	double base = x2 - x1;
+	double height = y2 - y1;
+	
+	return Math.hypot(base , height);
 }
 
-public static void merge(int child1 , int child2) {
-    parent[find(child1)] = find(child2);
+public static int find(int n) {
+	return parent[n] == n ? n : (parent[n] = find(parent[n]));
+}
+
+public static void merge(int i , int j) {
+	parent[find(i)] = find(j);
 }
 
 public static void main(String[] args) {
-Kattio scan = new Kattio(System.in);
+Scanner scan = new Scanner(System.in);
 
-int cases = scan.getInt();
+int cases = scan.nextInt();
 
-for (int zax = 0; zax < cases; zax++)
-    {
-    int numOfIslands = scan.getInt();
-    ArrayList<Bridge> bridges = new ArrayList<>();
-    ArrayList<Island> islands = new ArrayList<>();
-    parent = new int[numOfIslands];
-    
-    for (int i = 0; i < numOfIslands; i++)
-        {
-        parent[i] = i;
-        islands.add(new Island(scan.getDouble() , scan.getDouble()));
-        }
-    
-    for (int i = 0; i < numOfIslands; i++)
-        for (int j = 0; j < i; j++)
-            {
-            double x1 = islands.get(i).x;
-            double y1 = islands.get(i).y;
-            double x2 = islands.get(j).x;
-            double y2 = islands.get(j).y;
-            
-            double distance = Math.hypot(x2 - x1 , y2 - y1);
-            
-            bridges.add(new Bridge(i , j , distance));
-            }
-    
-    Collections.sort(bridges);
-    double totalLength = 0;
-    int bridgesConstructed = 0;
-    
-    for (Bridge bridge : bridges)
-        {
-        if (find(bridge.isle1) != find(bridge.isle2))
-            {
-            bridgesConstructed++;
-            totalLength += bridge.length;
-            merge(bridge.isle1 , bridge.isle2);
-            
-            if (bridgesConstructed == numOfIslands - 1)
-                break;
-            }
-        }
-
-    System.out.printf("%.5f" , totalLength);
-    System.out.println();
-    }
+while (cases --> 0)
+	{
+	int points = scan.nextInt();
+	double[] x = new double[points];
+	double[] y = new double[points];
+	
+	for (int i = 0; i < points; i++)
+		{
+		x[i] = scan.nextDouble();
+		y[i] = scan.nextDouble();
+		}
+	
+	ArrayList<Edge> edges = new ArrayList<>();
+	
+	for (int i = 0; i < points; i++)
+		for (int j = i + 1; j < points; j++)
+			edges.add(new Edge(i , j , dist(x[i] , y[i] , x[j] , y[j])));
+	
+	Collections.sort(edges);
+	
+	parent = new int[points];
+	
+	for (int i = 0; i < points; i++)
+		parent[i] = i;
+	
+	int count = 0;
+	double sum = 0;
+	
+	while (count < points - 1)
+		{
+		Edge edge = edges.remove(0);
+		
+		if (find(edge.node1) != find(edge.node2))
+			{
+			merge(edge.node1 , edge.node2);
+			sum += edge.distance;
+			count++;
+			}
+		}
+	
+	System.out.printf("%.5f \n" , sum);
+	}
 
 scan.close();
-    }
+	}
 }
 
-class Bridge implements Comparable<Bridge> {
-    
-int isle1 , isle2;
-double length;
+class Edge implements Comparable<Edge> {
+	
+int node1 , node2;
+double distance;
 
-public Bridge(int a , int b , double c) {
-    isle1 = a;
-    isle2 = b;
-    length = c;
+public Edge(int a , int b , double x) {
+	node1 = a;
+	node2 = b;
+	distance = x;
 }
 
-public int compareTo(Bridge b) {
-    if (this.length < b.length)
-        return -1;
-    
-    if (this.length > b.length)
-        return 1;
-    
-    return 0;
-}
-
-}
-
-class Island {
-    
-double x , y;
-
-public Island(double x , double y) {
-    this.x = x;
-    this.y = y;
+public int compareTo(Edge edge) {
+	double difference = this.distance - edge.distance;
+	
+	if (difference > 0)
+		return 1;
+	
+	if (difference == 0)
+		return 0;
+	
+	return -1;
 }
 
 }
