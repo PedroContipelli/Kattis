@@ -40,17 +40,17 @@ for (int changes = 1; changes <= 3; changes++)
 
 public static int countDigits(String str) {
 	
-	int count = 0;
-	
-	for (int i = 0; i < str.length(); i++)
-		{
-		char x = str.charAt(i);
-		
-		if (x >= '0' && x <= '9')
-			count++;
-		}
-	
-	return count;
+int count = 0;
+
+for (int i = 0; i < str.length(); i++)
+	{
+	char x = str.charAt(i);
+
+	if (x >= '0' && x <= '9')
+		count++;
+	}
+
+return count;
 }
 
 public static void main(String[] args) {
