@@ -3,37 +3,37 @@ public class 2048 {
 	
 public static void move(int[] nums) {
 	
-	boolean[] merge = new boolean[4];
-	
-	for (int i = 0; i < nums.length; i++)
-		for (int j = i; j - 1 >= 0 && !merge[j - 1]; j--)
+boolean[] merge = new boolean[4];
+
+for (int i = 0; i < nums.length; i++)
+	for (int j = i; j - 1 >= 0 && !merge[j - 1]; j--)
+		{
+		if (nums[j - 1] == 0)
 			{
-			if (nums[j - 1] == 0)
-				{
-				nums[j - 1] = nums[j];
-				nums[j] = 0;
-				}
-			else if (nums[j - 1] == nums[j])
-				{
-				nums[j - 1] *= 2;
-				nums[j] = 0;
-				merge[j - 1] = true;
-				break;
-				}
-			else
-				break;
+			nums[j - 1] = nums[j];
+			nums[j] = 0;
 			}
+		else if (nums[j - 1] == nums[j])
+			{
+			nums[j - 1] *= 2;
+			nums[j] = 0;
+			merge[j - 1] = true;
+			break;
+			}
+		else
+			break;
+		}
 }
 
 public static int[][] rotate(int[][] nums) {
 	
-	int[][] rot = new int[4][4];
-	
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++)
-			rot[3 - j][i] = nums[i][j];
-	
-	return rot;
+int[][] rot = new int[4][4];
+
+for (int i = 0; i < 4; i++)
+	for (int j = 0; j < 4; j++)
+		rot[3 - j][i] = nums[i][j];
+
+return rot;
 }
 
 public static void main(String[] args) {
