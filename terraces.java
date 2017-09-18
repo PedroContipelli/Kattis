@@ -3,17 +3,19 @@ public class terraces {
 	
 static int[] R = {-1 , 1 , 0 , 0};
 static int[] C = {0 , 0 , -1 , 1};
+static int rows , cols;
 
-public static boolean inBounds(int checkR , int checkC , int rows , int cols) {
+public static boolean inBounds(int checkR , int checkC) {
 
 	return checkR >= 0 && checkR < rows && checkC >= 0 && checkC < cols;
+	
 }
 
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
-int cols = scan.nextInt();
-int rows = scan.nextInt();
+cols = scan.nextInt();
+rows = scan.nextInt();
 
 int total = 0;
 
@@ -27,7 +29,6 @@ for (int i = 0; i < rows; i++)
 for (int i = 0; i < rows; i++)
 	for (int j = 0; j < cols; j++)
 		{
-		
 		if (visited[i][j])
 			continue;
 		
@@ -35,22 +36,22 @@ for (int i = 0; i < rows; i++)
 		queue.add(new GardenPoint(i , j));
 		visited[i][j] = true;
 		
-		int counter = 0;
+		int count = 0;
 		boolean triggered = false;
 		
 		while (!queue.isEmpty())
 			{
-			counter++;
-			GardenPoint loc = queue.remove(0);
-			int r = loc.r;
-			int c = loc.c;
+			GardenPoint current = queue.remove(0);
+			count++;
+			int r = current.r;
+			int c = current.c;
 			
 			for (int x = 0; x < 4; x++)
 				{
 				int newR = r + R[x];
 				int newC = c + C[x];
 				
-				if (inBounds(newR , newC , rows , cols))
+				if (inBounds(newR , newC))
 					{
 					if (!visited[newR][newC] && land[newR][newC] == land[r][c])
 						{
@@ -65,7 +66,7 @@ for (int i = 0; i < rows; i++)
 			}
 		
 			if (!triggered)
-				total += counter;
+				total += count;
 		}
 
 System.out.println(total);

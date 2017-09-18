@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 public class vacuumba {
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
@@ -9,8 +9,8 @@ while (cases --> 0)
 	{
 	int moves = scan.nextInt();
 	
-	double posX = 0;
-	double posY = 0;
+	double X = 0;
+	double Y = 0;
 	double angle = 90;
 	
 	while (moves --> 0)
@@ -20,14 +20,11 @@ while (cases --> 0)
 		
 		angle += ang;
 		
-		posX += len * Math.cos(Math.toRadians(angle));
-		posY += len * Math.sin(Math.toRadians(angle));
+		X += len * Math.cos(Math.toRadians(angle));
+		Y += len * Math.sin(Math.toRadians(angle));
 		}
 	
-	System.out.printf("%.6f", posX);
-	System.out.print(" ");
-	System.out.printf("%.6f", posY);
-	System.out.println();
+	System.out.printf("%.4f %.4f \n" , X , Y);
 	}
 
 scan.close();

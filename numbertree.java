@@ -1,27 +1,27 @@
-import java.util.Scanner;
+import java.util.*;
 public class numbertree {
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
-long height = (long)(Math.pow(2 , scan.nextInt() + 1) - 1);
+int height = scan.nextInt();
+long numTop = (long)(Math.pow(2 , height + 1) - 1);
+
 long subtract = 0;
-String str = scan.nextLine();
     
-if (str.length() == 0)
-    System.out.println(height);
-else
+if (scan.hasNext())
     {
-    str = str.substring(1);
-    for (int i = 0; i < str.length(); i++)
-        {
-        if (str.charAt(i) == 'L')
-        subtract = (2 * subtract) + 1;
-        else
-        subtract = (2 * subtract) + 2;
-        }
+    char[] path = scan.next().toCharArray();
     
-    System.out.println(height - subtract);
+    for (char x : path)
+    	{
+        if (x == 'L')
+        	subtract = (2 * subtract) + 1;
+        else
+        	subtract = (2 * subtract) + 2;
+    	}
     }
+
+System.out.println(numTop - subtract);
     
 scan.close();
     }

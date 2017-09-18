@@ -1,24 +1,10 @@
 import java.util.*;
 public class managingpackaging {
     
-public static HashSet<String> dependencies(String line) {
-    StringTokenizer parse = new StringTokenizer(line , " ");
-    HashSet<String> dependencies = new HashSet<>();
-    
-    while (parse.hasMoreTokens())
-        dependencies.add(parse.nextToken());
-    
-    return dependencies;
-}
+public static boolean canInstall(HashSet<String> deps , ArrayList<String> installs) {
 
-public static boolean canInstall(String pack , HashMap<String , HashSet<String>> dependencies , ArrayList<String> installs) {
-    HashSet<String> dep = dependencies.get(pack);
-    
-    if (dep.isEmpty())
-        return true;
-    
-    for (String x : dep)
-        if (!installs.contains(x))
+    for (String dep : deps)
+        if (!installs.contains(dep))
             return false;
     
     return true;
@@ -27,50 +13,49 @@ public static boolean canInstall(String pack , HashMap<String , HashSet<String>>
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
-main:
 while (true)
     {
     int n = scan.nextInt();
+    scan.nextLine();
     
     if (n == 0)
         break;
     
-    HashMap<String , HashSet<String>> dependencies = new HashMap<>();
     ArrayList<String> packages = new ArrayList<>();
     ArrayList<String> installs = new ArrayList<>();
+    HashMap<String , HashSet<String>> deps = new HashMap<>();
     
     for (int i = 0; i < n; i++)
         {
-        packages.add(scan.next());
-        dependencies.put(packages.get(i) , dependencies(scan.nextLine()));
+    	StringTokenizer token = new StringTokenizer(scan.nextLine() , " ");
+    	
+        String pack = token.nextToken();
+        packages.add(pack);
+        deps.put(pack , new HashSet<String>());
+        
+        while(token.hasMoreTokens())
+            deps.get(pack).add(token.nextToken());
         }
     
     Collections.sort(packages);
     
-    while (!packages.isEmpty())
+    for (int i = 0; i < packages.size(); i++)
         {
-        boolean found = false;
+        String pack = packages.get(i);
         
-        for (int i = 0; i < packages.size(); i++)
+        if (canInstall(deps.get(pack) , installs))
             {
-            if (canInstall(packages.get(i) , dependencies , installs))
-                {
-                installs.add(packages.get(i));
-                packages.remove(i);
-                found = true;
-                i = -1;
-                }
-            }
-        
-        if (!found)
-            {
-            System.out.println("cannot be ordered\n");
-            continue main;
+        	packages.remove(i);
+            installs.add(pack);
+            i = -1;
             }
         }
     
-    for (String x : installs)
-        System.out.println(x);
+    if (installs.size() < n)
+        System.out.println("cannot be ordered");
+    else
+        for (String pack : installs)
+            System.out.println(pack);
     
     System.out.println();
     }
