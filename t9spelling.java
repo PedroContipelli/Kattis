@@ -1,55 +1,58 @@
-import java.util.Scanner;
+import java.util.*;
 public class t9spelling {
+	
+static String data = "abc*|def*|ghi*|jkl*|mno*|pqrs|tuv*|wxyz";
+
+public static int times(char letter) {
+
+	if (letter == ' ')
+		return 1;
+	
+	return data.indexOf(letter) % 5 + 1;
+}
+
+public static int numbr(char letter) {
+	
+	if (letter == ' ')
+		return 0;
+	
+	return data.indexOf(letter) / 5 + 2;
+}
+
+public static String print(char letter , char last) {
+
+	String build = "";
+	
+	for (int i = 0; i < times(letter); i++)
+		build += numbr(letter);
+	
+	return build;
+}
+
 public static void main(String[] args) {
 Scanner scan = new Scanner(System.in);
 
-int testcases = scan.nextInt();
+int cases = scan.nextInt();
 scan.nextLine();
-String[] letters = new String[8];
-letters[0] = "abc";
-letters[1] = "def";
-letters[2] = "ghi";
-letters[3] = "jkl";
-letters[4] = "mno";
-letters[5] = "pqrs";
-letters[6] = "tuv";
-letters[7] = "wxyz";
-int oldsave = 0;
-int current = 0;
 
-for (int zax = 0; zax < testcases; zax++)
+for (int num = 1; num <= cases; num++)
 	{
-	String str = scan.nextLine();
-	System.out.print("Case #" + (zax + 1) + ": ");
+	System.out.print("Case #" + num + ": ");
 	
-	for (int i = 0; i < str.length(); i++)
+	String line = scan.nextLine();
+	
+	char last = 'X';
+	
+	for (int i = 0; i < line.length(); i++)
 		{
-		current = 2;
-		String letter = str.substring(i , i + 1);
+		char letter = line.charAt(i);
 		
-		if (letter.equals(" "))
-			{
-			current = 0;
-			
-			if (current == oldsave)
-				System.out.print(" ");
-			
-			System.out.print(0);
-			}
+		if (numbr(letter) == numbr(last))
+			System.out.print(" ");
 		
-		else
-			{
-			while (! letters[current - 2].contains(letter))
-				current++;
-			
-			if (current == oldsave)
-				System.out.print(" ");
-			
-			for (int j = 0; j < letters[current - 2].indexOf(letter) + 1; j++)
-				System.out.print(current);
-			}
+		System.out.print(print(letter , last));
 		
-		oldsave = current;
+		last = letter;
 		}
 	
 	System.out.println();
@@ -57,5 +60,4 @@ for (int zax = 0; zax < testcases; zax++)
 
 scan.close();
 	}
-
 }
