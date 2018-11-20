@@ -1,55 +1,52 @@
 import java.util.*;
 public class runningmom {
-
-public static boolean search(String start , HashMap<String , HashSet<String>> map , HashSet<String> visited) {
     
-    for (String city : map.get(start))
+static HashMap<String , HashSet<String>> graph = new HashMap<>();
+
+public static boolean DFS(String city , HashSet<String> visited) {
+        
+    visited.add(city);
+    
+    for (String connect : graph.get(city))
         {
-        if (!visited.contains(city))
-            {
-            visited.add(city);
-            
-            if (search(city , map , visited))
-                return true;
-            }
-        else
+        if (visited.contains(connect))
             return true;
+        
+        visited.add(connect);
+        
+        if (DFS(connect , visited))
+            return true;
+        
+        visited.remove(connect);
         }
     
     return false;
 }
 
 public static void main(String[] args) {
-Scanner scan = new Scanner(System.in);
-HashMap<String , HashSet<String>> cities = new HashMap<>();
+Kattio scan = new Kattio(System.in);
 
-int n = scan.nextInt();
-String[] info = new String[2*n];
+int edges = scan.getInt();
 
-for (int i = 0; i < 2*n; i += 2)
+for (int i = 0; i < edges; i++)
     {
-    info[i] = scan.next();
-    info[i + 1] = scan.next();
+    String city1 = scan.getWord();
+    String city2 = scan.getWord();
     
-    if (!cities.containsKey(info[i]))
-        cities.put(info[i] , new HashSet<String>());
+    if (!graph.containsKey(city1))
+        graph.put(city1 , new HashSet<>());
     
-    if (!cities.containsKey(info[i + 1]))
-        cities.put(info[i + 1] , new HashSet<String>());
+    if (!graph.containsKey(city2))
+        graph.put(city2 , new HashSet<>());
     
-    cities.get(info[i]).add(info[i + 1]);
+    graph.get(city1).add(city2);
     }
 
-scan.nextLine();
-
-while (scan.hasNextLine())
+while (scan.hasMoreTokens())
     {
-    HashSet<String> tour = new HashSet<>();
-    String city = scan.nextLine();
-    tour.add(city);
+    String city = scan.getWord();
     
-    System.out.print(city + " ");
-    System.out.println(search(city , cities , tour) ? "safe" : "trapped");
+    System.out.println(city + (DFS(city , new HashSet<String>()) ? " safe" : " trapped"));
     }
 
 scan.close();
