@@ -6,7 +6,7 @@ public static void move(int[] nums) {
 boolean[] merge = new boolean[4];
 
 for (int i = 0; i < nums.length; i++)
-	for (int j = i; j - 1 >= 0 && !merge[j - 1]; j--)
+	for (int j = i; j > 0 && !merge[j - 1]; j--)
 		{
 		if (nums[j - 1] == 0)
 			{
