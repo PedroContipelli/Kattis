@@ -11,7 +11,7 @@ public static BigInteger factorial(int n) {
 	return bigN;
 }
 
-public static int instance(String in , char x) {
+public static int count(String in , char x) {
 	
 	int count = 0;
 	
@@ -31,16 +31,14 @@ while (scan.hasNext())
 	
 	BigInteger num = factorial(str.length());
 	
-	for (int i = 65; i < 91; i++)
-		num = num.divide(factorial(instance(str , (char)i)));
+	for (char c = 'A'; c <= 'Z'; c++)
+		num = num.divide(factorial(count(str , c)));
 	
-	for (int i = 97; i < 123; i++)
-		num = num.divide(factorial(instance(str , (char)i)));
+	for (char c = 'a'; c <= 'z'; c++)
+		num = num.divide(factorial(count(str , c)));
 	
 	System.out.println(num);
 	}
-
-
 
 scan.close();
 	}
